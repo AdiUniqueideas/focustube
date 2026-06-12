@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusTube - Ad-Free Student Study Space</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🎓 FocusTube</h1>
+            <p>Paste your lecture link below to study without distracting advertisements.</p>
+        </header>
+
+        <main>
+            <div class="input-area">
+                <input type="text" id="youtubeLink" placeholder="Paste YouTube video URL here (e.g., https://www.youtube.com/watch?v=...)">
+                <button onclick="loadVideo()">Start Focus Mode</button>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+
+            <div class="video-container" id="videoContainer">
+                <iframe id="videoPlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </main>
+
+        <footer>
+            <p>Designed for Students | Stay Focused, Keep Learning 🚀</p>
+        </footer>
+    </div>
+
+    <script>
+        function extractVideoId(url) {
+            // Regular expression to extract the unique YouTube Video ID
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        function loadVideo() {
+            const urlInput = document.getElementById('youtubeLink').value;
+            const videoId = extractVideoId(urlInput);
+            const playerContainer = document.getElementById('videoContainer');
+            const player = document.getElementById('videoPlayer');
+            const errorDiv = document.getElementById('errorMessage');
+
+            if (videoId) {
+                // Hide any previous error
+                errorDiv.style.display = 'none';
+                
+                // Set the embed URL. Using youtube-nocookie enhances privacy and reduces tracking ads.
+                player.src = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
+                
+                // Show the video container smoothly
+                playerContainer.style.display = 'block';
+            } else {
+                // Show error message if the link is invalid
+                playerContainer.style.display = 'none';
+                errorDiv.textContent = '❌ Please enter a valid YouTube URL.';
+                errorDiv.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
